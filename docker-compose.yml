@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
-      - keycloak_network
+      - network
     ports:
       - "5432:5432"
 
@@ -29,8 +29,8 @@ services:
       KC_HEALTH_ENABLED: true
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_DB}
+      KC_DB: ${POSTGRES_DB}
+      KC_DB_URL: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_SCHEMA: public
@@ -40,12 +40,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - keycloak_network
+      - network
 
 volumes:
   postgres_data:
     driver: local
 
 networks:
-  keycloak_network:
+  network:
     driver: bridge
